@@ -51,5 +51,17 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>게시물 미디어 선택과 업로드를 위해 Dimpl이 장치의 미디어 라이브러리를 사용하는 것을 허용하시겠습니까</string>
+	<key>NSCameraUsageDescription</key>
+	<string>NFT 소유권 증명을 위해 Dimpl이 장치의 카메라를 사용하는 것을 허용하시겠습니까</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>음성 통화를 위해 Dimpl이 장치의 마이크를 사용하는 것을 허용하시겠습니까</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>게시물 미디어 선택과 업로드를 위해 Dimpl이 장치의 사진 라이브러리를 사용하는 것을 허용하시겠습니까</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>

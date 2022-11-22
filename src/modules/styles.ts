@@ -5,12 +5,12 @@ export const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 export const COLORS = {
   primary: {
-    DEFAULT: 'rgb(170, 55, 255)',
-    light: 'rgb(170, 55, 255, 0.5)',
+    DEFAULT: 'rgb(63, 203, 175)',
+    light: 'rgba(63, 203, 175, 0.3)',
   },
   secondary: {
     DEFAULT: '#4738ff',
-    light: 'rgb(137, 128, 255)',
+    light: 'rgba(137, 128, 255, 0.3)',
   },
   gray: {
     100: 'rgb(242, 242, 247)',

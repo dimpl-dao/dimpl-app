@@ -10,7 +10,7 @@ export const useAutoLogin = () => {
     onSuccess: Function,
     onFailure: Function,
   ) => {
-    const {data: userResponse} = await promiseFn({
+    const userResponse = await promiseFn({
       url: APIS.user._().url,
       token: jwt,
       method: 'get',

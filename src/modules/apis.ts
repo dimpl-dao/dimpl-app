@@ -12,6 +12,7 @@ import {QueryFunction} from '@tanstack/react-query';
 
 // export const BASE_URL = 'http://localhost:3000';
 const BASE_URL = 'http://192.168.1.185:3000';
+// const BASE_URL = 'http://143.248.192.123:3000';
 export const JWT = 'jwt';
 
 const apiMethods = ['get', 'post', 'delete', 'put', 'patch'] as ApiMethod[];
@@ -64,12 +65,30 @@ export const urlParams = (obj: any, nullable?: boolean) => {
 
 const APIS = {
   user: {
-    _: (account?: string, signature?: string) =>
-      apiV1(`/user${urlParams({account, signature})}`),
+    _: () => apiV1('/user'),
+  },
+  file: {
+    image: () => apiV1('/file/image'),
   },
   listing: {
-    feed: (page?: number, keyword?: string) =>
-      apiV1(`/listing/feed${urlParams({page, keyword})}`),
+    _: (id?: number) => apiV1(`/listing${urlParams({id})}`),
+    abi: () => apiV1('/listing/abi'),
+    feed: (limit?: number, cursor?: string) =>
+      apiV1(`/listing/feed${urlParams({cursor, limit})}`),
+    list: (
+      status: number,
+      klaytnAddress?: number,
+      limit?: number,
+      cursor?: string,
+    ) =>
+      apiV1(
+        `/listing/list${urlParams({
+          status,
+          cursor,
+          limit,
+          klaytn_address: klaytnAddress,
+        })}`,
+      ),
   },
 };
 

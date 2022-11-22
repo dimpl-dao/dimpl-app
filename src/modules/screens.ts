@@ -1,7 +1,14 @@
+import {TransitionPresets} from '@react-navigation/stack';
 import React from 'react';
+import {Platform} from 'react-native';
 import KaikasSignInScreen from 'src/screens/KaikasSignInScreen';
+import KaikasTransactScreen from 'src/screens/KaikasTransactScreen';
 import KlipSignInScreen from 'src/screens/KlipSignInScreen';
+import KlipTransactScreen from 'src/screens/KlipTransactScreen';
+import {ListingCreateScreen} from 'src/screens/ListingCreateScreen';
 import {ListingFeedScreen} from 'src/screens/ListingFeedScreen';
+import {ListingListScreen} from 'src/screens/ListingListScreen';
+import {ListingScreen} from 'src/screens/ListingScreen';
 import {MainScreen} from 'src/screens/MainScreen';
 import {ProfileScreen} from 'src/screens/ProfileScreen';
 import {ProposalFeedScreen} from 'src/screens/ProposalFeedScreen';
@@ -67,6 +74,38 @@ export const SCREENS: Screens = {
     component: KlipSignInScreen,
     options: {},
     initialParams: {},
+  },
+  ListingCreate: {
+    name: 'ListingCreate',
+    component: ListingCreateScreen,
+    options: {
+      ...(Platform.OS === 'ios'
+        ? TransitionPresets.ModalSlideFromBottomIOS
+        : TransitionPresets.ModalTransition),
+      gestureEnabled: false,
+    },
+  },
+  KaikasTransact: {
+    name: 'KaikasTransact',
+    component: KaikasTransactScreen,
+    options: {
+      gestureEnabled: false,
+    },
+  },
+  KlipTransact: {
+    name: 'KlipTransact',
+    component: KlipTransactScreen,
+    options: {
+      gestureEnabled: false,
+    },
+  },
+  ListingList: {
+    name: 'ListingList',
+    component: ListingListScreen,
+  },
+  Listing: {
+    name: 'Listing',
+    component: ListingScreen,
   },
 };
 

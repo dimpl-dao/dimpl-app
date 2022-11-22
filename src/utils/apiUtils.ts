@@ -14,6 +14,7 @@ export type PromiseFnProps = {
   method: ApiMethod;
   body?: object;
   token?: string;
+  headers?: object;
 };
 export type PromiseFnRes = any;
 export const promiseFn = async ({url, body, token, method}: PromiseFnProps) => {
@@ -26,12 +27,28 @@ export const promiseFn = async ({url, body, token, method}: PromiseFnProps) => {
     ...(body && {body: JSON.stringify(body)}),
   });
   const json = await res.json();
-  return {ok: res.ok, data: json, status: res.status};
+  return json;
+};
+export const promiseFnPure = async ({
+  url,
+  body,
+  method,
+  headers,
+}: PromiseFnProps) => {
+  const res = await fetch(url, {
+    method: method,
+    headers: {
+      'Content-Type': 'application/json',
+      ...headers,
+    },
+    body: body as any,
+  });
+  return res;
 };
 export const promiseFnWithToken = async (props: PromiseFnProps) => {
   const jwt = await AsyncStorage.getItem(JWT);
   if (jwt) {
     return await promiseFn({...props, token: jwt});
   }
-  return {ok: false, data: null, status: 403};
+  return null;
 };

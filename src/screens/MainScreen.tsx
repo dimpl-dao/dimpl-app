@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SCREENS} from 'src/modules/screens';
-import {Hash, Home, User} from 'react-native-feather';
+import {Home, User} from 'react-native-feather';
 import {COLORS} from 'src/modules/styles';
 
 const Tab = createBottomTabNavigator();
@@ -29,7 +29,7 @@ export const MainScreen = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name={'포럼'}
         component={SCREENS.ProposalFeed.component}
         options={{
@@ -43,7 +43,7 @@ export const MainScreen = () => {
             />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name={'나의 딤플'}
         component={SCREENS.Profile.component}

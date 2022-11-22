@@ -95,10 +95,8 @@ export default function useKaikasLogin() {
 
   async function getVerification({klaytnAddress}: {klaytnAddress: string}) {
     if (prepareAuthResult) {
-      const {data: verificationResponse} = await (
-        APIS.user._().put as Function
-      )({
-        account: klaytnAddress,
+      const verificationResponse = await (APIS.user._().put as Function)({
+        klaytn_address: klaytnAddress,
         request_key: prepareAuthResult.request_key,
         type: 'kaikas',
       });
