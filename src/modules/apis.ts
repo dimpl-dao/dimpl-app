@@ -11,7 +11,7 @@ import {
 import {QueryFunction} from '@tanstack/react-query';
 
 // export const BASE_URL = 'http://localhost:3000';
-const BASE_URL = 'http://192.168.1.185:3000';
+const BASE_URL = 'http://192.168.1.185';
 // const BASE_URL = 'http://143.248.192.123:3000';
 export const JWT = 'jwt';
 
