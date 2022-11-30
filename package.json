@@ -30,6 +30,7 @@
     "querystring": "^0.2.1",
     "react": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-event-listeners": "^1.0.7",
     "react-native-fast-image": "^8.6.3",
     "react-native-feather": "^1.1.2",
     "react-native-ffmpeg": "^0.5.2",
