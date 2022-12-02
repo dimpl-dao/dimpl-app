@@ -14,6 +14,7 @@ import {ListingCreateScreen} from 'src/screens/ListingCreateScreen';
 import {ListingFeedScreen} from 'src/screens/ListingFeedScreen';
 import {ListingListScreen} from 'src/screens/ListingListScreen';
 import {ListingScreen} from 'src/screens/ListingScreen';
+import {ListingSearchScreen} from 'src/screens/ListingSearchScreen';
 import {MainScreen} from 'src/screens/MainScreen';
 import {ProfileScreen} from 'src/screens/ProfileScreen';
 import {ProposalFeedScreen} from 'src/screens/ProposalFeedScreen';
@@ -47,6 +48,12 @@ export const SCREENS: Screens = {
   ListingFeed: {
     name: 'ListingFeed',
     component: ListingFeedScreen,
+    options: {},
+    initialParams: {},
+  },
+  ListingSearch: {
+    name: 'ListingSearch',
+    component: ListingSearchScreen,
     options: {},
     initialParams: {},
   },

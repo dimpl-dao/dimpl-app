@@ -80,6 +80,8 @@ const APIS = {
     abi: () => apiV1('/listing/abi'),
     feed: (limit?: number, cursor?: string) =>
       apiV1(`/listing/feed${urlParams({cursor, limit})}`),
+    search: (limit?: number, cursor?: string, keyword?: string) =>
+      apiV1(`/listing/search${urlParams({cursor, limit, keyword})}`),
     list: (
       status: number,
       klaytnAddress?: number,

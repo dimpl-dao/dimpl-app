@@ -1,7 +1,7 @@
 import {QueryFunction, useInfiniteQuery} from '@tanstack/react-query';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {ActivityIndicator, View} from 'react-native';
-import {Plus} from 'react-native-feather';
+import {ChevronLeft, Plus} from 'react-native-feather';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {Col} from 'src/components/core/Col';
 import {Div} from 'src/components/core/Div';
@@ -16,8 +16,12 @@ import {SCREENS} from 'src/modules/screens';
 import {COLORS} from 'src/modules/styles';
 import {Listing} from 'src/types/listing';
 import {Search} from 'react-native-feather';
+import {useNavigation} from '@react-navigation/native';
+import {TextInput} from 'src/components/ViewComponents';
+import useEdittableText from 'src/hooks/useEdittableText';
 
-export const ListingFeedScreen = () => {
+export const ListingSearchScreen = () => {
+  const searchRef = useRef(null);
   const limit = 15;
   const shadowProps = {
     style: {
@@ -30,11 +34,25 @@ export const ListingFeedScreen = () => {
       elevation: 2,
     },
   };
-  const navToListingCreate = useNavigate({screen: SCREENS.ListingCreate.name});
-  const navToListingSearch = useNavigate({screen: SCREENS.ListingSearch.name});
+  const [text, handleChangeText] = useEdittableText('');
+  const textRef = useRef('');
+  const handleChangeQuery = text => {
+    handleChangeText(text);
+    textRef.current = text;
+  };
+  useEffect(() => {
+    // @ts-ignore
+    refetch();
+  }, [text]);
+  const {goBack} = useNavigation();
+  const onPressSearch = () => {
+    searchRef?.current?.focus();
+  };
   const queryFn = async (params: {pageParam?: string}) => {
     // @ts-ignore
-    return await APIS.listing.feed(limit, params?.pageParam).getWithToken();
+    return await APIS.listing
+      .search(limit, params?.pageParam, textRef.current)
+      .getWithToken();
   };
   const {
     data,
@@ -48,7 +66,7 @@ export const ListingFeedScreen = () => {
     cacheTime: 10 * 60 * 1000,
     staleTime: 60 * 1000,
     refetchInterval: 10 * 60 * 1000,
-    queryKey: [APIS.listing.feed().key],
+    queryKey: [APIS.listing.search().key],
     queryFn: queryFn as QueryFunction,
     getNextPageParam: (lastPage: any) => {
       if (lastPage.listings?.length === limit) {
@@ -61,15 +79,32 @@ export const ListingFeedScreen = () => {
     <ScreenWrapper
       header={
         <Row itemsCenter h45 px15>
-          <Col auto>
-            <Span fontSize={19} bold>
-              피드
-            </Span>
+          <Col auto rounded100 mr20 onPress={goBack}>
+            <ChevronLeft
+              strokeWidth={2}
+              color={COLORS.black}
+              height={25}
+              width={25}
+            />
           </Col>
-          <Col />
-          <Col auto rounded100>
+          <Col>
+            <TextInput
+              innerRef={searchRef}
+              value={text}
+              placeholder="피드 검색"
+              fontSize={16}
+              bgGray200
+              rounded100
+              m0
+              p0
+              px8
+              h32
+              bold
+              onChangeText={handleChangeQuery}
+            />
+          </Col>
+          <Col auto rounded100 ml20 onPress={onPressSearch}>
             <Search
-              onPress={navToListingSearch}
               strokeWidth={2}
               color={COLORS.black}
               height={22}
@@ -104,35 +139,10 @@ export const ListingFeedScreen = () => {
                     <ActivityIndicator />
                   </Div>
                 )}
-                {!hasNextPage && (
-                  <Div itemsCenter py15>
-                    <Span textCenter bold>
-                      모두 확인했습니다.
-                    </Span>
-                  </Div>
-                )}
                 <Div h={50} />
               </>
             }
           />
-          <Div
-            absolute
-            bottom20
-            right20
-            bgWhite
-            rounded50
-            border={1.5}
-            borderBlack
-            {...shadowProps}
-            p10
-            onPress={navToListingCreate}>
-            <Plus
-              color={COLORS.black}
-              width={35}
-              height={35}
-              strokeWidth={1.5}
-            />
-          </Div>
         </Div>
       </>
     </ScreenWrapper>
