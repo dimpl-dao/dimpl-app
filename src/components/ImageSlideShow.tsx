@@ -1,9 +1,9 @@
 import React, {useRef, useState} from 'react';
-import {Div} from './Div';
-import {Img} from './Img';
-import {Row} from './Row';
-import {Col} from './Col';
-import {expandImageViewer} from './imageViewerUtils';
+import {Div} from './core/Div';
+import {Img} from './core/Img';
+import {Row} from './core/Row';
+import {Col} from './core/Col';
+import {expandImageViewer} from '../utils/imageViewerUtils';
 
 export default function ImageSlideShow({
   imageUris,

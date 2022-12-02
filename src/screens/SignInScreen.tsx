@@ -28,13 +28,13 @@ const SignInScreen = () => {
   const mottos: Motto[] = [
     {
       text: '간편한 중고 거래와\n 달달한 코인 리워드',
-      image: IMAGES.announcements,
+      image: IMAGES.easy,
       width: 748,
       height: 659,
     },
     {
       text: '착한자만이 살아남는\n 정의구현 시스템',
-      image: IMAGES.chatting,
+      image: IMAGES.justice,
       height: 589,
       width: 714,
     },
@@ -79,9 +79,7 @@ const SignInScreen = () => {
                 backgroundColor: COLORS.gray[300],
               }}
               dotElement={
-                <Div w15 h10 rounded5 mx4 overflowHidden>
-                  <GradientColorRect height={10} width={15} />
-                </Div>
+                <Div w15 h10 rounded5 mx4 overflowHidden bgBlack></Div>
               }
               inactiveDotOpacity={0.6}
               inactiveDotScale={1}

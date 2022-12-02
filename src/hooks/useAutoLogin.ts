@@ -1,12 +1,15 @@
-import APIS, {JWT} from 'src/modules/apis';
+import APIS from 'src/modules/apis';
 import {promiseFn} from 'src/utils/apiUtils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useQueryClient} from '@tanstack/react-query';
+import {useDispatch} from 'react-redux';
+import {appLoginAction, Wallet} from 'src/redux/appReducer';
 
 export const useAutoLogin = () => {
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
   const autoLogin = async (
     jwt: string,
+    wallet: Wallet,
     onSuccess: Function,
     onFailure: Function,
   ) => {
@@ -16,12 +19,8 @@ export const useAutoLogin = () => {
       method: 'get',
     });
     if (userResponse.success) {
-      await AsyncStorage.setItem(JWT, userResponse.jwt);
+      dispatch(appLoginAction({jwt, wallet}));
       await Promise.all([
-        queryClient.prefetchQuery(
-          [APIS.listing.feed().key],
-          APIS.listing.feed().getWithToken,
-        ),
         queryClient.prefetchQuery(
           [APIS.user._().key],
           APIS.user._().getWithToken,

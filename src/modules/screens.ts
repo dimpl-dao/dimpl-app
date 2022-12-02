@@ -1,6 +1,11 @@
 import {TransitionPresets} from '@react-navigation/stack';
 import React from 'react';
 import {Platform} from 'react-native';
+import {BidCreateScreen} from 'src/screens/BidCreateScreen';
+import {BidListScreen} from 'src/screens/BidListScreen';
+import {BidScreen} from 'src/screens/BidScreen';
+import {DeliveryAddressCreateScreen} from 'src/screens/DeliveryAddressCreateScreen';
+import {DeliveryAddressListScreen} from 'src/screens/DeliveryAddressListScreen';
 import KaikasSignInScreen from 'src/screens/KaikasSignInScreen';
 import KaikasTransactScreen from 'src/screens/KaikasTransactScreen';
 import KlipSignInScreen from 'src/screens/KlipSignInScreen';
@@ -106,6 +111,37 @@ export const SCREENS: Screens = {
   Listing: {
     name: 'Listing',
     component: ListingScreen,
+  },
+  BidCreate: {
+    name: 'BidCreate',
+    component: BidCreateScreen,
+    options: {
+      ...(Platform.OS === 'ios'
+        ? TransitionPresets.ModalSlideFromBottomIOS
+        : TransitionPresets.ModalTransition),
+      gestureEnabled: false,
+    },
+  },
+  Bid: {
+    name: 'Bid',
+    component: BidScreen,
+  },
+  DeliveryAddressCreate: {
+    name: 'DeliveryAddressCreate',
+    component: DeliveryAddressCreateScreen,
+    options: {
+      ...(Platform.OS === 'ios'
+        ? TransitionPresets.ModalSlideFromBottomIOS
+        : TransitionPresets.ModalTransition),
+    },
+  },
+  DeliveryAddressList: {
+    name: 'DeliveryAddressList',
+    component: DeliveryAddressListScreen,
+  },
+  BidList: {
+    name: 'BidList',
+    component: BidListScreen,
   },
 };
 

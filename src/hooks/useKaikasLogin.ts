@@ -7,6 +7,7 @@ import APIS from 'src/modules/apis';
 import {useAutoLogin} from './useAutoLogin';
 import {SCREENS} from 'src/modules/screens';
 import {kaikasApp2AppRequestUrl} from 'src/utils/uriUtils';
+import {Wallet} from 'src/redux/appReducer';
 
 const SERVER_URL = 'https://api.kaikas.io/api/v1/k';
 
@@ -73,6 +74,7 @@ export default function useKaikasLogin() {
         if (verificationResponse.success) {
           await autoLogin(
             verificationResponse.jwt,
+            Wallet.KAIKAS,
             () => {
               navigation.dispatch(
                 CommonActions.reset({
@@ -113,7 +115,7 @@ export default function useKaikasLogin() {
       return res.result;
     }
     if (res.status === 'requested') {
-      setError('클립 지갑에 주소를 요청하였지만 아직 수락하지 않았습니다.');
+      setError('카이카스 지갑에 주소를 요청하였지만 아직 수락하지 않았습니다.');
       return null;
     }
     return null;

@@ -4,6 +4,7 @@ import {withRootReducer} from './src/redux/withRootReducer';
 import {Navigator} from 'src/Navigator';
 import {NavigationContainer} from '@react-navigation/native';
 import {LogBox} from 'react-native';
+import {ImageFullscreenViewer} from 'src/components/ImageFullscreenViewer';
 
 LogBox.ignoreAllLogs();
 
@@ -25,6 +26,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         <Navigator />
+        <ImageFullscreenViewer />
       </NavigationContainer>
     </QueryClientProvider>
   );

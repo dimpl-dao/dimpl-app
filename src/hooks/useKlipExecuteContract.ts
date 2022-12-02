@@ -5,6 +5,8 @@ import {prepare, getResult} from 'klip-sdk';
 import {largeBump} from 'src/utils/hapticFeedBackUtils';
 import {klipApp2AppRequestUrl} from 'src/utils/uriUtils';
 import {name as appName} from '../../app.json';
+import {useQuery} from '@tanstack/react-query';
+import APIS from 'src/modules/apis';
 
 type PrepareResult = {
   expiration_time: number;
@@ -16,15 +18,20 @@ export default function useKlipExecuteContract() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [prepareResult, setPrepareResult] = useState<PrepareResult>(null);
+  const {data} = useQuery({
+    queryKey: [APIS.user._().key],
+    queryFn: APIS.user._().getWithToken,
+    refetchOnMount: false,
+  });
 
   async function requestExecuteContract({
-    from,
+    from = data.user.klaytn_address,
     to,
     value,
     abi,
     params,
   }: {
-    from: string;
+    from?: string;
     to: string;
     value: number;
     abi: string;

@@ -58,29 +58,24 @@ const KaikasTransactScreen = ({
           <Row
             bg={COLORS.kaikas.DEFAULT}
             rounded10
-            onPress={executeContract}
-            p15>
-            <Col />
-            <Col auto>
-              <Div>
-                <Span bold white fontSize={16}>
-                  다시 시도하기
-                </Span>
-              </Div>
-            </Col>
-            <Col />
-          </Row>
-          <Row
-            mt10
-            bgGray200
-            rounded10
             onPress={typeof callback === 'function' ? callback : goBack}
             p15>
             <Col />
             <Col auto>
               <Div>
+                <Span bold white fontSize={16}>
+                  {typeof callback === 'function' ? '글 확인하기' : '뒤로가기'}
+                </Span>
+              </Div>
+            </Col>
+            <Col />
+          </Row>
+          <Row mt10 bgGray200 rounded10 p15 onPress={executeContract}>
+            <Col />
+            <Col auto>
+              <Div>
                 <Span bold fontSize={16}>
-                  {typeof callback === 'function' ? '뒤로가기' : '글 확인하기'}
+                  다시 시도하기
                 </Span>
               </Div>
             </Col>

@@ -6,8 +6,8 @@ import {largeBump} from 'src/utils/hapticFeedBackUtils';
 import {kaikasApp2AppRequestUrl} from 'src/utils/uriUtils';
 import {name as appName} from '../../app.json';
 
-const CHAIN_ID = '1001';
-// const CHAIN_ID = '8217';
+// const CHAIN_ID = '1001';
+const CHAIN_ID = '8217';
 const SERVER_URL = 'https://api.kaikas.io/api/v1/k';
 
 const prepare = {

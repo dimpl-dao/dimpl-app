@@ -3,10 +3,14 @@ import {Provider} from 'react-redux';
 import {applyMiddleware, compose, createStore} from 'redux';
 import rootReducer from './rootReducer';
 import reduxThunk from 'redux-thunk';
+import rootSaga from './rootSaga';
+import createSagaMiddleware from 'redux-saga';
 
 const configureStore = () => {
-  const enhancer = compose(applyMiddleware(reduxThunk));
+  const sagaMiddleware = createSagaMiddleware();
+  const enhancer = compose(applyMiddleware(sagaMiddleware, reduxThunk));
   const store = createStore(rootReducer, enhancer);
+  sagaMiddleware.run(rootSaga);
   return store;
 };
 

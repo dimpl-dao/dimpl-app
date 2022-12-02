@@ -1,23 +1,27 @@
-import {useQuery} from '@tanstack/react-query';
+import React from 'react';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {Div} from 'src/components/core/Div';
 import {Row} from 'src/components/core/Row';
 import {Col} from 'src/components/core/Col';
-import {Img} from 'src/components/core/Img';
 import {Span} from 'src/components/core/Span';
-import {ListingFull} from 'src/components/ListingFull';
 import {COLORS, DEVICE_WIDTH} from 'src/modules/styles';
 import ImageCarousel from 'src/components/ImageCarousel';
-import {ChevronLeft, Heart} from 'react-native-feather';
+import {Check, ChevronLeft, MoreVertical} from 'react-native-feather';
 import {ScreenWrapper} from 'src/components/ScreenWrapper';
 import {useNavigation} from '@react-navigation/native';
 import APIS from 'src/modules/apis';
-import {Platform} from 'react-native';
-import {KeyboardAvoidingView, ScrollView} from 'src/components/ViewComponents';
+import {ScrollView} from 'src/components/ViewComponents';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import { User } from 'react-native-feather';
+import {User} from 'react-native-feather';
 import {truncateAddress} from 'src/utils/blockchainUtils';
-import { pebtoklay } from 'src/utils/klayUtils';
-import { timediffer } from 'src/utils/timeUtil';
+import {pebtoklay} from 'src/utils/klayUtils';
+import {timediffer} from 'src/utils/timeUtil';
+import {ListingStatus} from 'src/types/listing';
+import {useNavigate} from 'src/hooks/useNavigate';
+import {SCREENS} from 'src/modules/screens';
+import {BlankProfile} from 'src/components/BlankProfile';
+import {BidCore} from 'src/components/BidCore';
+import {Bid} from 'src/types/bid';
 
 export const ListingScreen = ({
   route: {
@@ -29,128 +33,207 @@ export const ListingScreen = ({
     queryFn: APIS.listing._(id).get,
   });
   const listing = data?.listing;
-  
-  const heartProps = {
-    fill: 'white',
-    width: 22,
-    height: 22,
-    color: 'black',
-    strokeWidth: 2,
-  }
-  const shadowProps = {
-    style: {
-      shadowOffset: {
-        width: 2,
-        height: 2,
-      },
-      shadowOpacity: 0.3,
-      shadowRadius: 3,
-      elevation: 2,
-    },
-  };
-  const notchHeight = useSafeAreaInsets().bottom;
+  const notchHeight = useSafeAreaInsets().top;
+  const bottomInset = useSafeAreaInsets().bottom;
   const {goBack} = useNavigation();
+  const navToBidCreate = useNavigate({screen: SCREENS.BidCreate.name});
+  const gotoBidCreate = () => {
+    navToBidCreate({listing});
+  };
+  console.log(listing);
   return (
     <>
-    {listing && <ScreenWrapper>
-      <>
-      <Div relative bgWhite flex={1}>
-      <Div h={notchHeight + 50}>
-        <Div absolute w={DEVICE_WIDTH} top={notchHeight + 5}>
-          <Row itemsCenter py5 h40 px8>
-            <Col auto onPress={goBack}>
-              <ChevronLeft height={30} color={COLORS.black} strokeWidth={2} />
-            </Col>
-            <Col itemsEnd mx5><Heart {...heartProps}></Heart></Col>
-          </Row>
-        </Div>
-      </Div>
-      <ScrollView keyboardShouldPersistTaps="always">
+      {listing && (
+        <ScreenWrapper>
           <>
-            <Div relative>
-              <ImageCarousel
-                images={listing.image_uris}
-                sliderWidth={DEVICE_WIDTH}
-                sliderHeight={DEVICE_WIDTH}
-              />
+            <Div relative flex={1}>
+              <ScrollView keyboardShouldPersistTaps="always" bounces={false}>
+                <>
+                  <Div relative>
+                    <ImageCarousel
+                      images={listing.image_uris}
+                      sliderWidth={DEVICE_WIDTH}
+                      sliderHeight={DEVICE_WIDTH}
+                    />
+                  </Div>
+                  <Div px15>
+                    <Row py14 itemsCenter borderBottom={0.5} borderGray200>
+                      <Col auto mr15>
+                        <Div
+                          itemsCenter
+                          justifyCenter
+                          rounded100
+                          border={1}
+                          borderBlack
+                          h40
+                          w40>
+                          <BlankProfile
+                            w={36}
+                            h={36}
+                            address={listing.user.klaytn_address}
+                          />
+                        </Div>
+                      </Col>
+                      <Col>
+                        <Div>
+                          <Span fontSize={13} bold>
+                            {truncateAddress(`0x${listing.user_id}`)}
+                          </Span>
+                        </Div>
+                      </Col>
+                      <Col />
+                      <Col auto>
+                        <ListingStatusButton
+                          id={listing.id}
+                          status={listing.status}
+                        />
+                      </Col>
+                    </Row>
+                    <Div py14>
+                      <Div>
+                        <Span bold fontSize={24}>
+                          {listing.title}
+                        </Span>
+                      </Div>
+                      <Div mt8>
+                        <Span fontSize={14} color={'gray'}>
+                          {timediffer(listing.updated_at)}
+                        </Span>
+                      </Div>
+                    </Div>
+                    <Div py10>
+                      <Span fontSize={17}>{listing.description}</Span>
+                    </Div>
+                    <Div mt20 py15 borderTop={0.5} borderGray200>
+                      <Span bold fontSize={19}>
+                        거래제안...
+                      </Span>
+                    </Div>
+                    <Div>
+                      {listing.paid_bids.map((bid: Bid) => (
+                        <BidCore bid={bid} />
+                      ))}
+                    </Div>
+                  </Div>
+                </>
+              </ScrollView>
             </Div>
-            <Div px15>
-              <Row mt16 itemsCenter>
-                <Col>
-                <Span bold fontSize={22}>
-                  {listing.title}
-                </Span>
-                </Col>
-                <Col auto>
-                <Span fontSize={17} style={{fontWeight: '600'}}>
-                  {pebtoklay(listing.price) + " KLAY"}
-                </Span>
-                </Col>
-              </Row>
-              <Row pb16 itemsCenter borderBottom={0.5} borderGray200>
-                <Col>
-                  <Span ml3 fontSize={14} color={'gray'}>
-                    {timediffer(listing.updated_at)}
-                  </Span>
-                </Col>
-                <Col auto>
-                <Span fontSize={14} color={'gray'} lineHeight={20}>
-                  {"deposit " + pebtoklay(listing.deposit) + " KLAY"}
-                </Span>
-                </Col>
-              </Row>
-              <Span mx5 my15 fontSize={17}>
-                {listing.description}
-              </Span>
-              
-              
-            </Div>
-          </>
-      </ScrollView>
-    </Div>
-      <Div h={notchHeight} bgWhite>
-      <Row px20 py15 itemsCenter bgWhite borderTop={2} borderGray200>
-          <Col auto mr15>
-            <Div
-              itemsCenter
+            <Row
+              absolute
+              w={DEVICE_WIDTH}
+              top={notchHeight}
+              h50
               justifyCenter
-              rounded100
-              border={1}
-              borderGray200
-              h40
-              w40>
-              <User
-                width={25}
-                height={25}
-                strokeWidth={1.5}
-                color={COLORS.gray[700]}
-              />
+              itemsCenter
+              px15>
+              <Col auto onPress={goBack}>
+                <ChevronLeft
+                  height={32}
+                  width={32}
+                  color={COLORS.white}
+                  strokeWidth={1.2}
+                />
+              </Col>
+              <Col />
+              <Col auto onPress={goBack}>
+                <MoreVertical
+                  height={24}
+                  width={24}
+                  color={COLORS.white}
+                  fill={COLORS.white}
+                  strokeWidth={1.2}
+                />
+              </Col>
+            </Row>
+            <Div bgWhite>
+              <Row px20 py15 itemsCenter bgWhite borderTop={1} borderGray200>
+                <Col auto>
+                  <Div>
+                    <Span fontSize={19} style={{fontWeight: '600'}}>
+                      {pebtoklay(listing.price) + ' klay'}
+                    </Span>
+                  </Div>
+                  <Div mt2>
+                    <Span fontSize={14} gray700 lineHeight={20}>
+                      {'판매자 보증금 ' + pebtoklay(listing.deposit) + ' klay'}
+                    </Span>
+                  </Div>
+                </Col>
+                <Col />
+                <Div
+                  auto
+                  zIndex={1}
+                  px14
+                  py8
+                  rounded3
+                  border={1.5}
+                  onPress={gotoBidCreate}>
+                  <Span style={{fontWeight: '600'}} fontSize={17}>
+                    {'거래 제안하기'}
+                  </Span>
+                </Div>
+              </Row>
             </Div>
-          </Col>
-          <Col>
-            <Div>
-              <Span fontSize={13} bold>{truncateAddress(`0x${listing.user_id}`)}</Span>
-            </Div>
-          </Col>
-          <Div
-            auto
-            zIndex={1}
-            px14
-            py8
-            rounded12
-            bgPrimary
-            {...shadowProps}
-            onPress={
-              () => {}
-            }>
-            <Span style={{fontWeight: '600'}} white fontSize={17}>
-              {"거래 제안하기"}
-            </Span>
-          </Div>
-        </Row>
-      </Div>
-      </>
-    </ScreenWrapper>}
+            <Div h={bottomInset} />
+          </>
+        </ScreenWrapper>
+      )}
     </>
+  );
+};
+
+const ListingStatusButton = ({
+  id,
+  status,
+}: {
+  id: string;
+  status: ListingStatus;
+}) => {
+  const queryClient = useQueryClient();
+  const checkListingStatus = async () => {
+    const res = (APIS.listing._(id).patchWithToken as Function)({
+      id,
+      status: ListingStatus.PAID,
+    });
+    if (res.success) {
+      return res;
+    }
+    new Error();
+  };
+  const mutation = useMutation({
+    mutationFn: checkListingStatus,
+    onSuccess: data => {
+      queryClient.setQueryData([APIS.listing._(id).key], data);
+    },
+  });
+  if (status === ListingStatus.CREATED) {
+    return (
+      <Div onPress={mutation.mutate}>
+        <Span warning bold>
+          보증금 납입확인
+        </Span>
+      </Div>
+    );
+  }
+  if (status === ListingStatus.PAID) {
+    return (
+      <Row auto itemsCenter>
+        <Span gray700>보증금 납입완료</Span>
+      </Row>
+    );
+  }
+  if (status === ListingStatus.LOCKED) {
+    return (
+      <Div bgBlack rounded3 px14 py8>
+        <Span white>제품 전송중</Span>
+      </Div>
+    );
+  }
+  return (
+    <Div bgInfo rounded3 px14 py8>
+      <Span white bold>
+        거래 완료
+      </Span>
+    </Div>
   );
 };

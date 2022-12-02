@@ -1,75 +1,81 @@
 import React, {useState} from 'react';
-import {ActivityIndicator} from 'react-native';
-import {Trash, Upload} from 'react-native-feather';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import {COLORS} from 'src/modules/styles';
-import {getAdjustedHeightFromDimensions} from 'src/utils/imageUtils';
-
+import {COLORS, DEVICE_WIDTH} from 'src/modules/styles';
+import {expandImageViewer} from 'src/utils/imageViewerUtils';
 import {Div} from './core/Div';
 import {Img} from './core/Img';
 
 export default function ImageCarousel({
   images,
   sliderWidth,
-  sliderHeight = null,
+  sliderHeight,
+}: {
+  images: string[];
+  sliderWidth: number;
+  sliderHeight: number;
 }) {
   const [currentPage, setCurrentPage] = useState(0);
-  const imageHeight =
-    sliderHeight ||
-    (images[0]?.uri && images[0].width && images[0].height
-      ? getAdjustedHeightFromDimensions({
-          width: images[0].width,
-          height: images[0].height,
-          frameWidth: sliderWidth,
-        })
-      : sliderWidth * 0.7);
+  const handlePressImage = (index: number) => expandImageViewer(images, index);
   return (
     <>
-      <Div borderGray200 overflowHidden>
+      <Div borderGray200 overflowHidden relative>
         <Carousel
           data={images}
+          vertical={false}
+          // @ts-ignore
+          bounces={false}
           itemWidth={sliderWidth}
           sliderWidth={sliderWidth}
           onSnapToItem={index => setCurrentPage(index)}
           renderItem={({item, index}) => (
             <CarouselItem
-              item={item}
-              index={index}
-              sliderWidth={sliderWidth}
-              imageHeight={imageHeight}
+              uri={item}
+              width={sliderWidth}
+              height={sliderHeight}
+              onPress={() => handlePressImage(index)}
             />
           )}
         />
-      </Div>
-      <Div flex={1} itemsCenter justifyCenter>
-        <Pagination
-          dotsLength={images.length}
-          activeDotIndex={currentPage}
-          containerStyle={{
-            paddingTop: 8,
-            paddingBottom: 0,
-            borderRadius: 100,
-          }}
-          dotStyle={{
-            width: 7,
-            height: 7,
-            borderRadius: 5,
-            marginHorizontal: -5,
-          }}
-          inactiveDotColor={COLORS.gray[400]}
-          inactiveDotScale={1}
-          dotColor={COLORS.black}
-        />
+        <Div absolute bottom10 w={DEVICE_WIDTH} itemsCenter justifyCenter>
+          <Pagination
+            dotsLength={images.length}
+            activeDotIndex={currentPage}
+            containerStyle={{
+              paddingTop: 8,
+              paddingBottom: 0,
+              borderRadius: 100,
+            }}
+            dotStyle={{
+              width: 7,
+              height: 7,
+              borderRadius: 5,
+              marginHorizontal: -5,
+            }}
+            inactiveDotColor={COLORS.gray[400]}
+            inactiveDotScale={1}
+            dotColor={COLORS.white}
+          />
+        </Div>
       </Div>
     </>
   );
 }
 
-function CarouselItem({item, index, sliderWidth, imageHeight}) {
+function CarouselItem({
+  uri,
+  width,
+  height,
+  onPress,
+}: {
+  uri: string;
+  width: number;
+  height: number;
+  onPress: Function;
+}) {
   return (
     <Div>
-      <Div w={sliderWidth} h={imageHeight} bgGray200 relative>
-        <Img w={sliderWidth} h={imageHeight} uri={item} absolute></Img>
+      <Div w={width} h={height} bgGray200 relative onPress={onPress}>
+        <Img w={width} h={height} uri={uri} absolute />
       </Div>
     </Div>
   );

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {JWT} from 'src/modules/apis';
+import {STORAGE_KEYS} from 'src/modules/storageKeys';
 
 export type ApiMethod = 'get' | 'post' | 'delete' | 'put' | 'patch';
 export type ApiMethodWithToken =
@@ -46,7 +46,7 @@ export const promiseFnPure = async ({
   return res;
 };
 export const promiseFnWithToken = async (props: PromiseFnProps) => {
-  const jwt = await AsyncStorage.getItem(JWT);
+  const jwt = await AsyncStorage.getItem(STORAGE_KEYS.jwt);
   if (jwt) {
     return await promiseFn({...props, token: jwt});
   }

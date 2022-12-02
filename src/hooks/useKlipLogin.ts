@@ -9,6 +9,7 @@ import {name as appName} from '../../app.json';
 import APIS from 'src/modules/apis';
 import {useAutoLogin} from './useAutoLogin';
 import {SCREENS} from 'src/modules/screens';
+import {Wallet} from 'src/redux/appReducer';
 
 type PrepareResult = {
   expiration_time: number;
@@ -49,6 +50,7 @@ export default function useKlipLogin() {
         if (verificationResponse) {
           await autoLogin(
             verificationResponse.jwt,
+            Wallet.KLIP,
             () => {
               navigation.dispatch(
                 CommonActions.reset({

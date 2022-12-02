@@ -56,8 +56,8 @@ export const useListingCreate = () => {
         const body = {
           title,
           description,
-          price: parseFloat(price) * 10e18,
-          deposit: parseFloat(deposit) * 10e18,
+          price: parseFloat(price) * 1e18,
+          deposit: parseFloat(deposit) * 1e18,
           remonstrable_block_interval: parseInt(deliveryTime) * 86400,
           images: signedImageIds,
         };
@@ -73,7 +73,7 @@ export const useListingCreate = () => {
           value: listing.deposit,
           params: [
             listing.price,
-            BigInt(`0x${listing.id.replaceAll('-', '')}`),
+            BigInt(`0x${listing.id.replaceAll('-', '')}`).toString(10),
             listing.remonstrable_block_interval,
           ],
           callback: () => {

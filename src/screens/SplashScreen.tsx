@@ -10,9 +10,10 @@ import {IMAGES} from 'src/modules/images';
 import {useAutoLogin} from 'src/hooks/useAutoLogin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigate} from 'src/hooks/useNavigate';
-import {JWT} from 'src/modules/apis';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {SCREENS} from 'src/modules/screens';
+import {STORAGE_KEYS} from 'src/modules/storageKeys';
+import {Wallet} from 'src/redux/appReducer';
 
 const SplashScreen = () => {
   const backgroundScale = useSharedValue(0.05);
@@ -50,10 +51,12 @@ const SplashScreen = () => {
     backgroundScale.value = withDelay(1200, withTiming(1, {duration: 800}));
   };
   const login = async () => {
-    AsyncStorage.getItem(JWT).then(async value => {
+    AsyncStorage.getItem(STORAGE_KEYS.jwt).then(async value => {
+      const wallet = await AsyncStorage.getItem(STORAGE_KEYS.wallet);
       if (value) {
         await autoLogin(
           value,
+          wallet as Wallet,
           () => {
             navigation.dispatch(
               CommonActions.reset({

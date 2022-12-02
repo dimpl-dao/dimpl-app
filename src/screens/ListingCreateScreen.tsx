@@ -10,8 +10,8 @@ import {Span} from 'src/components/core/Span';
 import {ScrollView} from 'src/components/core/ViewComponents';
 import {ScreenWrapper} from 'src/components/ScreenWrapper';
 import {TextField} from 'src/components/TextField';
+import {WalletExecuteButton} from 'src/components/WalletExecuteButton';
 import {useListingCreate} from 'src/hooks/useListingCreate';
-import {ICONS} from 'src/modules/icons';
 import {COLORS} from 'src/modules/styles';
 
 const SelectedImageForListing = ({
@@ -223,7 +223,7 @@ export const ListingCreateScreen = () => {
                   <TextField
                     keyboardType="numeric"
                     value={deposit}
-                    placeholder={'보증금 가격 (KLAY)'}
+                    placeholder={'보증금 (KLAY)'}
                     gray200
                     fontSize={17}
                     onChangeText={handleChangeDeposit}
@@ -373,64 +373,11 @@ export const ListingCreateScreen = () => {
           </Div>
         </ScrollView>
         <Div px15>
-          <Row>
-            <Col mr5 onPress={listingCreateWithKlip}>
-              <Row
-                bg={
-                  !loading.klip && !loading.kaikas
-                    ? COLORS.klip.DEFAULT
-                    : COLORS.klip.light
-                }
-                rounded10
-                itemsCenter
-                py15>
-                <Col />
-                {loading.klip ? (
-                  <ActivityIndicator />
-                ) : (
-                  <>
-                    <Col auto mr5>
-                      <Img source={ICONS.klip} h20 w40 />
-                    </Col>
-                    <Col auto ml5>
-                      <Span bold fontSize={11}>
-                        클립으로 완료하기
-                      </Span>
-                    </Col>
-                  </>
-                )}
-                <Col />
-              </Row>
-            </Col>
-            <Col ml5 onPress={listingCreateWithKaikas}>
-              <Row
-                bg={
-                  !loading.klip && !loading.kaikas
-                    ? COLORS.kaikas.DEFAULT
-                    : COLORS.kaikas.light
-                }
-                rounded10
-                itemsCenter
-                py15>
-                <Col />
-                {loading.kaikas ? (
-                  <ActivityIndicator />
-                ) : (
-                  <>
-                    <Col auto mr5>
-                      <Img source={ICONS.kaikasWhite} h20 w20 />
-                    </Col>
-                    <Col auto ml5>
-                      <Span white bold fontSize={11}>
-                        카이카스로 완료하기
-                      </Span>
-                    </Col>
-                  </>
-                )}
-                <Col />
-              </Row>
-            </Col>
-          </Row>
+          <WalletExecuteButton
+            loading={loading}
+            onPressKaikas={listingCreateWithKaikas}
+            onPressKlip={listingCreateWithKlip}
+          />
         </Div>
       </Div>
     </ScreenWrapper>

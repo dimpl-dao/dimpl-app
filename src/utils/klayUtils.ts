@@ -1,3 +1,3 @@
-export const pebtoklay = (peb:number) => {
-    return Math.round(peb / 10**18);
+export const pebtoklay = (peb: number) => {
+  return peb / 1e18;
 };

@@ -65,7 +65,7 @@ const KlipSignInScreen = () => {
             <Span fontSize={19} bold textCenter>
               {prepareAuthResult
                 ? 'Klip 정보 제공에 동의하셨나요?'
-                : 'BetterWorld가 Klip 지갑 정보를 사용하는 것을 허용해주세요.'}
+                : 'Dimpl이 Klip 지갑 정보를 사용하는 것을 허용해주세요.'}
             </Span>
           </Div>
           {error ? (

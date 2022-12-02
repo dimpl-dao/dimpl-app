@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import useFileUpload, {FileUploadReturnType} from './useFileUpload';
+import useFileUpload from './useFileUpload';
 import MultipleImagePicker, {
   ImageResults,
   MediaType,
@@ -118,10 +118,7 @@ export default function useImagesUpload({
     return newSelectedFiles;
   };
   const upload = async (file: FileObject) => {
-    const blob_signed_id = await uploadFile(
-      file,
-      FileUploadReturnType.BlobSignedId,
-    );
+    const blob_signed_id = await uploadFile(file);
     return blob_signed_id;
   };
   return {

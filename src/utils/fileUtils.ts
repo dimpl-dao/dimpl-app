@@ -8,7 +8,7 @@ export const fileChecksum = async (file: any) => {
 };
 
 export const fileBase64 = async (path: string) => {
-  if (path == null || path == '') return '';
+  if (path === null || path === '') return '';
   const base64 = await RNFS.readFile(path, 'base64').then(res => {
     return res;
   });

@@ -19,7 +19,7 @@ export const ScreenWrapper = ({
   return (
     <Div flex={1} bg={bg} pb={footerInset ? notchBottom : 0}>
       {header && (
-        <Div bgWhite pt={notchHeight} borderBottom={0.2} borderGray200>
+        <Div bgWhite pt={notchHeight} borderBottom={0.5} borderGray200>
           {header}
         </Div>
       )}
