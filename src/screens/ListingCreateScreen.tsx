@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Platform} from 'react-native';
 import {Camera, X} from 'react-native-feather';
 import {Col} from 'src/components/core/Col';
 import {Div} from 'src/components/core/Div';
@@ -10,6 +10,7 @@ import {Span} from 'src/components/core/Span';
 import {ScrollView} from 'src/components/core/ViewComponents';
 import {ScreenWrapper} from 'src/components/ScreenWrapper';
 import {TextField} from 'src/components/TextField';
+import {KeyboardAvoidingView} from 'src/components/ViewComponents';
 import {WalletExecuteButton} from 'src/components/WalletExecuteButton';
 import {useListingCreate} from 'src/hooks/useListingCreate';
 import {COLORS} from 'src/modules/styles';
@@ -156,222 +157,230 @@ export const ListingCreateScreen = () => {
         </Row>
       }>
       <Div flex={1}>
-        <ScrollView flex={1} relative>
-          {error ? (
-            <Div px15 py10>
-              <Span danger>{error}</Span>
-            </Div>
-          ) : null}
-          <ScrollView flex={1} relative horizontal py25>
-            <Div
-              h70
-              w70
-              itemsCenter
-              justifyCenter
-              borderGray200
-              border={1}
-              rounded3
-              ml15>
-              <Div itemsCenter justifyCenter onPress={handleAddImages}>
-                <Camera
-                  color={COLORS.white}
-                  fill={COLORS.black}
-                  width={20}
-                  height={20}
-                />
-                <Span gray600 mt3>
-                  {images.length}/10
-                </Span>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          flex={1}
+          bgWhite
+          relative>
+          <ScrollView flex={1} relative keyboardShouldPersistTaps="always">
+            {error ? (
+              <Div px15 py10>
+                <Span danger>{error}</Span>
               </Div>
-            </Div>
-            {images.map((image, index) => (
-              <SelectedImageForListing
-                loading={image.loading}
-                source={image.uri}
-                index={index}
-                onPress={handleRemoveImage}
-              />
-            ))}
-          </ScrollView>
-          <Div mx15>
-            <Div borderTop={1} borderGray100>
-              <TextField
-                value={title}
-                placeholder={'글 제목'}
-                gray200
-                mt20
-                mb15
-                fontSize={17}
-                onChangeText={handleChangeTitle}
-              />
-            </Div>
-            <Div borderTop={1} borderGray100>
-              <TextField
-                keyboardType="numeric"
-                value={price}
-                placeholder={'가격 (KLAY)'}
-                gray200
-                mt15
-                mb15
-                fontSize={17}
-                onChangeText={handleChangePrice}
-              />
-            </Div>
-            <Div borderTop={1} borderGray100>
-              <Row py10 itemsCenter>
-                <Col mr10 pb10>
-                  <TextField
-                    keyboardType="numeric"
-                    value={deposit}
-                    placeholder={'보증금 (KLAY)'}
-                    gray200
-                    fontSize={17}
-                    onChangeText={handleChangeDeposit}
+            ) : null}
+            <ScrollView flex={1} relative horizontal py25>
+              <Div
+                h70
+                w70
+                itemsCenter
+                justifyCenter
+                borderGray200
+                border={1}
+                rounded3
+                ml15>
+                <Div itemsCenter justifyCenter onPress={handleAddImages}>
+                  <Camera
+                    color={COLORS.white}
+                    fill={COLORS.black}
+                    width={20}
+                    height={20}
                   />
-                </Col>
-                <Col
-                  auto
-                  {...(deposit &&
-                  price &&
-                  parseFloat(deposit) / parseFloat(price) === 0.03
-                    ? buttonActiveProps
-                    : buttonInactiveProps)}
-                  p10
-                  rounded5
-                  mr10
-                  onPress={() => setDepositWithPercent(0.03)}>
-                  <Span
-                    bold
+                  <Span gray600 mt3>
+                    {images.length}/10
+                  </Span>
+                </Div>
+              </Div>
+              {images.map((image, index) => (
+                <SelectedImageForListing
+                  loading={image.loading}
+                  source={image.uri}
+                  index={index}
+                  onPress={handleRemoveImage}
+                />
+              ))}
+            </ScrollView>
+            <Div mx15>
+              <Div borderTop={1} borderGray100>
+                <TextField
+                  value={title}
+                  placeholder={'글 제목'}
+                  gray200
+                  mt20
+                  mb15
+                  fontSize={17}
+                  onChangeText={handleChangeTitle}
+                />
+              </Div>
+              <Div borderTop={1} borderGray100>
+                <TextField
+                  keyboardType="numeric"
+                  value={price}
+                  placeholder={'가격 (KLAY)'}
+                  gray200
+                  mt15
+                  mb15
+                  fontSize={17}
+                  onChangeText={handleChangePrice}
+                />
+              </Div>
+              <Div borderTop={1} borderGray100>
+                <Row py10 itemsCenter>
+                  <Col mr10 pb10>
+                    <TextField
+                      keyboardType="numeric"
+                      value={deposit}
+                      placeholder={'보증금 (KLAY)'}
+                      gray200
+                      fontSize={17}
+                      onChangeText={handleChangeDeposit}
+                    />
+                  </Col>
+                  <Col
+                    auto
                     {...(deposit &&
                     price &&
                     parseFloat(deposit) / parseFloat(price) === 0.03
-                      ? textActiveProps
-                      : textInactiveProps)}>
-                    3%
-                  </Span>
-                </Col>
-                <Col
-                  auto
-                  {...(deposit &&
-                  price &&
-                  parseFloat(deposit) / parseFloat(price) === 0.05
-                    ? buttonActiveProps
-                    : buttonInactiveProps)}
-                  p10
-                  rounded5
-                  mr10
-                  onPress={() => setDepositWithPercent(0.05)}>
-                  <Span
-                    bold
+                      ? buttonActiveProps
+                      : buttonInactiveProps)}
+                    p10
+                    rounded5
+                    mr10
+                    onPress={() => setDepositWithPercent(0.03)}>
+                    <Span
+                      bold
+                      {...(deposit &&
+                      price &&
+                      parseFloat(deposit) / parseFloat(price) === 0.03
+                        ? textActiveProps
+                        : textInactiveProps)}>
+                      3%
+                    </Span>
+                  </Col>
+                  <Col
+                    auto
                     {...(deposit &&
                     price &&
                     parseFloat(deposit) / parseFloat(price) === 0.05
-                      ? textActiveProps
-                      : textInactiveProps)}>
-                    5%
-                  </Span>
-                </Col>
-                <Col
-                  auto
-                  {...(deposit &&
-                  price &&
-                  parseFloat(deposit) / parseFloat(price) === 0.1
-                    ? buttonActiveProps
-                    : buttonInactiveProps)}
-                  p10
-                  rounded5
-                  mr10
-                  onPress={() => setDepositWithPercent(0.1)}>
-                  <Span
-                    bold
+                      ? buttonActiveProps
+                      : buttonInactiveProps)}
+                    p10
+                    rounded5
+                    mr10
+                    onPress={() => setDepositWithPercent(0.05)}>
+                    <Span
+                      bold
+                      {...(deposit &&
+                      price &&
+                      parseFloat(deposit) / parseFloat(price) === 0.05
+                        ? textActiveProps
+                        : textInactiveProps)}>
+                      5%
+                    </Span>
+                  </Col>
+                  <Col
+                    auto
                     {...(deposit &&
                     price &&
                     parseFloat(deposit) / parseFloat(price) === 0.1
-                      ? textActiveProps
-                      : textInactiveProps)}>
-                    10%
-                  </Span>
-                </Col>
-              </Row>
-            </Div>
-            <Div borderTop={1} borderGray100>
-              <Row py10 itemsCenter>
-                <Col mr10 pb10>
-                  <TextField
-                    keyboardType="numeric"
-                    value={deliveryTime}
-                    placeholder={'배송기한 (일)'}
-                    gray200
-                    fontSize={17}
-                    onChangeText={handleChangeDeliveryTime}
-                  />
-                </Col>
-                <Col
-                  auto
-                  {...(deliveryTime === '3'
-                    ? buttonActiveProps
-                    : buttonInactiveProps)}
-                  p10
-                  rounded5
-                  mr10
-                  onPress={() => setDeliveryTimeWithEnum(DeliveryTime.FAST)}>
-                  <Span
-                    bold
+                      ? buttonActiveProps
+                      : buttonInactiveProps)}
+                    p10
+                    rounded5
+                    mr10
+                    onPress={() => setDepositWithPercent(0.1)}>
+                    <Span
+                      bold
+                      {...(deposit &&
+                      price &&
+                      parseFloat(deposit) / parseFloat(price) === 0.1
+                        ? textActiveProps
+                        : textInactiveProps)}>
+                      10%
+                    </Span>
+                  </Col>
+                </Row>
+              </Div>
+              <Div borderTop={1} borderGray100>
+                <Row py10 itemsCenter>
+                  <Col mr10 pb10>
+                    <TextField
+                      keyboardType="numeric"
+                      value={deliveryTime}
+                      placeholder={'배송기한 (일)'}
+                      gray200
+                      fontSize={17}
+                      onChangeText={handleChangeDeliveryTime}
+                    />
+                  </Col>
+                  <Col
+                    auto
                     {...(deliveryTime === '3'
-                      ? textActiveProps
-                      : textInactiveProps)}>
-                    빠르게
-                  </Span>
-                </Col>
-                <Col
-                  auto
-                  {...(deliveryTime === '7'
-                    ? buttonActiveProps
-                    : buttonInactiveProps)}
-                  p10
-                  rounded5
-                  mr10
-                  onPress={() => setDeliveryTimeWithEnum(DeliveryTime.NORMAL)}>
-                  <Span
-                    bold
+                      ? buttonActiveProps
+                      : buttonInactiveProps)}
+                    p10
+                    rounded5
+                    mr10
+                    onPress={() => setDeliveryTimeWithEnum(DeliveryTime.FAST)}>
+                    <Span
+                      bold
+                      {...(deliveryTime === '3'
+                        ? textActiveProps
+                        : textInactiveProps)}>
+                      빠르게
+                    </Span>
+                  </Col>
+                  <Col
+                    auto
                     {...(deliveryTime === '7'
-                      ? textActiveProps
-                      : textInactiveProps)}>
-                    중간
-                  </Span>
-                </Col>
-                <Col
-                  auto
-                  {...(deliveryTime === '10'
-                    ? buttonActiveProps
-                    : buttonInactiveProps)}
-                  p10
-                  rounded5
-                  mr10
-                  onPress={() => setDeliveryTimeWithEnum(DeliveryTime.SLOW)}>
-                  <Span
-                    bold
+                      ? buttonActiveProps
+                      : buttonInactiveProps)}
+                    p10
+                    rounded5
+                    mr10
+                    onPress={() =>
+                      setDeliveryTimeWithEnum(DeliveryTime.NORMAL)
+                    }>
+                    <Span
+                      bold
+                      {...(deliveryTime === '7'
+                        ? textActiveProps
+                        : textInactiveProps)}>
+                      중간
+                    </Span>
+                  </Col>
+                  <Col
+                    auto
                     {...(deliveryTime === '10'
-                      ? textActiveProps
-                      : textInactiveProps)}>
-                    천천히
-                  </Span>
-                </Col>
-              </Row>
+                      ? buttonActiveProps
+                      : buttonInactiveProps)}
+                    p10
+                    rounded5
+                    mr10
+                    onPress={() => setDeliveryTimeWithEnum(DeliveryTime.SLOW)}>
+                    <Span
+                      bold
+                      {...(deliveryTime === '10'
+                        ? textActiveProps
+                        : textInactiveProps)}>
+                      천천히
+                    </Span>
+                  </Col>
+                </Row>
+              </Div>
+              <Div borderTop={1} borderGray100>
+                <TextField
+                  value={description}
+                  placeholder={'내용'}
+                  gray200
+                  mt15
+                  mb15
+                  fontSize={17}
+                  onChangeText={handleChangeDescription}
+                />
+              </Div>
             </Div>
-            <Div borderTop={1} borderGray100>
-              <TextField
-                value={description}
-                placeholder={'내용'}
-                gray200
-                mt15
-                mb15
-                fontSize={17}
-                onChangeText={handleChangeDescription}
-              />
-            </Div>
-          </Div>
-        </ScrollView>
+          </ScrollView>
+        </KeyboardAvoidingView>
         <Div px15>
           <WalletExecuteButton
             loading={loading}
