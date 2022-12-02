@@ -11,9 +11,9 @@ import {
 import {QueryFunction} from '@tanstack/react-query';
 
 // export const BASE_URL = 'http://localhost:3000';
-// const BASE_URL =
-//   'http://dimpl-api-load-balancer-179507794.ap-northeast-2.elb.amazonaws.com';
-const BASE_URL = 'http://192.168.1.185:3000';
+const BASE_URL =
+  'http://dimpl-api-load-balancer-179507794.ap-northeast-2.elb.amazonaws.com';
+// const BASE_URL = 'http://192.168.1.185:3000';
 
 const apiMethods = ['get', 'post', 'delete', 'put', 'patch'] as ApiMethod[];
 
