@@ -66,7 +66,7 @@ export const ProfileScreen = () => {
         <Row h50 itemsCenter px15>
           <Col auto>
             <Span fontSize={19} bold>
-              나의 딤플...
+              나의 Dimpl
             </Span>
           </Col>
           <Col />
