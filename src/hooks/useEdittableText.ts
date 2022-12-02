@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 
 export default function useEdittableText(initialtext: string) {
-  const [text, setText] = useState(initialtext);
+  const [text, setText] = useState<string>(initialtext);
   const textHasChanged = initialtext !== text;
   useEffect(() => {
     setText(initialtext);

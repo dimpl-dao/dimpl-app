@@ -1,5 +1,5 @@
 import {QueryFunction, useInfiniteQuery} from '@tanstack/react-query';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {ActivityIndicator, View} from 'react-native';
 import {ChevronLeft, Plus} from 'react-native-feather';
 import {RefreshControl} from 'react-native-gesture-handler';
@@ -23,35 +23,20 @@ import useEdittableText from 'src/hooks/useEdittableText';
 export const ListingSearchScreen = () => {
   const searchRef = useRef(null);
   const limit = 15;
-  const shadowProps = {
-    style: {
-      shadowOffset: {
-        width: 2,
-        height: 2,
-      },
-      shadowOpacity: 0.3,
-      shadowRadius: 3,
-      elevation: 2,
-    },
-  };
-  const [text, handleChangeText] = useEdittableText('');
-  const textRef = useRef('');
-  const handleChangeQuery = text => {
+  const [text, handleChangeText] = useState<string>('');
+  const handleChangeQuery = (text: string) => {
     handleChangeText(text);
-    textRef.current = text;
-  };
-  useEffect(() => {
-    // @ts-ignore
     refetch();
-  }, [text]);
+  };
   const {goBack} = useNavigation();
   const onPressSearch = () => {
+    // @ts-ignore
     searchRef?.current?.focus();
   };
-  const queryFn = async (params: {pageParam?: string}) => {
-    // @ts-ignore
+  const queryFn = async (params: {pageParam?: string; queryKey: any[]}) => {
+    console.log(params);
     return await APIS.listing
-      .search(limit, params?.pageParam, textRef.current)
+      .search(limit, params?.pageParam, params.queryKey[1].keyword)
       .getWithToken();
   };
   const {
@@ -66,8 +51,8 @@ export const ListingSearchScreen = () => {
     cacheTime: 10 * 60 * 1000,
     staleTime: 60 * 1000,
     refetchInterval: 10 * 60 * 1000,
-    queryKey: [APIS.listing.search().key],
-    queryFn: queryFn as QueryFunction,
+    queryKey: [APIS.listing.search().key, {keyword: text}],
+    queryFn: queryFn,
     getNextPageParam: (lastPage: any) => {
       if (lastPage.listings?.length === limit) {
         return lastPage.cursor;
