@@ -485,6 +485,8 @@
 				DEVELOPMENT_TEAM = JTPH4Y3CZF;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = dimpl/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "딤플";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -495,7 +497,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.--PRODUCT-NAME-rfc1034identifier-";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.dimpl;
 				PRODUCT_NAME = dimpl;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -512,6 +514,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JTPH4Y3CZF;
 				INFOPLIST_FILE = dimpl/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "딤플";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -522,7 +526,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.--PRODUCT-NAME-rfc1034identifier-";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.dimpl;
 				PRODUCT_NAME = dimpl;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
