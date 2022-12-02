@@ -247,6 +247,13 @@ export const BidCreateScreen = ({
         </ScrollView>
         <Div px15>
           <WalletExecuteButton
+            text={
+              deposit
+                ? `${
+                    parseFloat(price) / 1e18 + parseFloat(deposit)
+                  } klay 맡겨두기`
+                : undefined
+            }
             loading={loading}
             onPressKaikas={bidCreateWithKaikas}
             onPressKlip={bidCreateWithKlip}

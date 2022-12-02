@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {Div} from 'src/components/core/Div';
 import {Row} from 'src/components/core/Row';
@@ -21,7 +21,14 @@ import {useNavigate} from 'src/hooks/useNavigate';
 import {SCREENS} from 'src/modules/screens';
 import {BlankProfile} from 'src/components/BlankProfile';
 import {BidCore} from 'src/components/BidCore';
+import Animated, {
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import {Bid} from 'src/types/bid';
+import {useIsMine} from 'src/hooks/useIsMine';
+import {useBidSelect} from 'src/hooks/useBidSelect';
 
 export const ListingScreen = ({
   route: {
@@ -33,30 +40,51 @@ export const ListingScreen = ({
     queryFn: APIS.listing._(id).get,
   });
   const listing = data?.listing;
+  const isMine = useIsMine(listing?.user?.klaytn_address);
   const notchHeight = useSafeAreaInsets().top;
   const bottomInset = useSafeAreaInsets().bottom;
+  const translationY = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler(event => {
+    translationY.value = event.contentOffset.y;
+  });
+  const headerStyles = useAnimatedStyle(() => {
+    return {
+      width: DEVICE_WIDTH,
+      height: DEVICE_WIDTH,
+      transform: [
+        {
+          scale: Math.max(-translationY.value / 100 + 1, 1),
+        },
+      ],
+    };
+  });
   const {goBack} = useNavigation();
   const navToBidCreate = useNavigate({screen: SCREENS.BidCreate.name});
   const gotoBidCreate = () => {
     navToBidCreate({listing});
   };
-  console.log(listing);
+  const {loading, error, setError, bidSelect} = useBidSelect({
+    listingHashId: listing?.hash_id_string,
+  });
   return (
     <>
       {listing && (
         <ScreenWrapper>
           <>
             <Div relative flex={1}>
-              <ScrollView keyboardShouldPersistTaps="always" bounces={false}>
+              <Animated.ScrollView
+                keyboardShouldPersistTaps="always"
+                scrollEventThrottle={16}
+                onScroll={scrollHandler}>
                 <>
-                  <Div relative>
+                  <Animated.View style={headerStyles}>
                     <ImageCarousel
                       images={listing.image_uris}
                       sliderWidth={DEVICE_WIDTH}
                       sliderHeight={DEVICE_WIDTH}
                     />
-                  </Div>
-                  <Div px15>
+                  </Animated.View>
+                  <Div px15 bgWhite>
                     <Row py14 itemsCenter borderBottom={0.5} borderGray200>
                       <Col auto mr15>
                         <Div
@@ -77,7 +105,9 @@ export const ListingScreen = ({
                       <Col>
                         <Div>
                           <Span fontSize={13} bold>
-                            {truncateAddress(`0x${listing.user_id}`)}
+                            {isMine
+                              ? '나'
+                              : truncateAddress(`0x${listing.user_id}`)}
                           </Span>
                         </Div>
                       </Col>
@@ -104,19 +134,24 @@ export const ListingScreen = ({
                     <Div py10>
                       <Span fontSize={17}>{listing.description}</Span>
                     </Div>
-                    <Div mt20 py15 borderTop={0.5} borderGray200>
+                    <Div mt20 pt15 borderTop={0.5} borderGray200>
                       <Span bold fontSize={19}>
                         거래제안...
                       </Span>
                     </Div>
-                    <Div>
+                    <Div py15>
                       {listing.paid_bids.map((bid: Bid) => (
-                        <BidCore bid={bid} />
+                        <BidCore
+                          bid={bid}
+                          isListingOwner={isMine}
+                          selected={bid.id === listing.bid_id}
+                          bidSelect={bidSelect}
+                        />
                       ))}
                     </Div>
                   </Div>
                 </>
-              </ScrollView>
+              </Animated.ScrollView>
             </Div>
             <Row
               absolute

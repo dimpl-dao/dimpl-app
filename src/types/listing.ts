@@ -15,6 +15,7 @@ export type Listing = {
   image_uri?: string;
   image_uris?: string[];
   description: string;
+  hash_id: string;
   title: string;
   updated_at: string;
   status: ListingStatus;

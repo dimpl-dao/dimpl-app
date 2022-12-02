@@ -12,10 +12,12 @@ import {Row} from './core/Row';
 import {Span} from './core/Span';
 
 export const WalletExecuteButton = ({
+  text,
   loading,
   onPressKlip,
   onPressKaikas,
 }: {
+  text?: string;
   loading: {klip: boolean; kaikas: boolean};
   onPressKlip: Function;
   onPressKaikas: Function;
@@ -47,7 +49,7 @@ export const WalletExecuteButton = ({
                 </Col>
                 <Col auto ml5>
                   <Span bold fontSize={14}>
-                    클립으로 완료하기
+                    {text || '카이카스로 완료하기'}
                   </Span>
                 </Col>
               </>
@@ -76,7 +78,7 @@ export const WalletExecuteButton = ({
                 </Col>
                 <Col auto ml5>
                   <Span white bold fontSize={14}>
-                    카이카스로 완료하기
+                    {text || '카이카스로 완료하기'}
                   </Span>
                 </Col>
               </>

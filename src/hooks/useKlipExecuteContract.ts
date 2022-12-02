@@ -25,7 +25,7 @@ export default function useKlipExecuteContract() {
   });
 
   async function requestExecuteContract({
-    from = data.user.klaytn_address,
+    from = `0x${data.user.klaytn_address}`,
     to,
     value,
     abi,
@@ -46,6 +46,7 @@ export default function useKlipExecuteContract() {
       abi: JSON.stringify(abi),
       params: JSON.stringify(params.map(item => item.toString())),
     })) as PrepareResult;
+    console.log(prepareRes);
     setPrepareResult(prepareRes);
     if (prepareRes) {
       Linking.openURL(klipApp2AppRequestUrl(prepareRes.request_key));

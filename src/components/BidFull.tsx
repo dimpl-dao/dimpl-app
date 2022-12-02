@@ -18,7 +18,7 @@ export const BidFull = ({bid}: {bid: Bid}) => {
   const deliveryAddress = bid?.delivery_address;
   const navToListing = useNavigate({screen: SCREENS.Listing.name});
   const gotoListing = () => {
-    navToListing({id: listing.id});
+    navToListing({id: listing?.id});
   };
   return (
     <Div borderBottom={0.5} pb20 borderGray200>
@@ -50,9 +50,9 @@ export const BidFull = ({bid}: {bid: Bid}) => {
       <Row itemsCenter px15>
         <Col auto w40 mr15 />
         <Col>
-          <Div borderGray200 border={0.5} p15 rounded5>
-            <Row itemsCenter onPress={gotoListing}>
-              {listing.description ? (
+          {listing ? (
+            <Div borderGray200 border={0.5} p15 rounded5>
+              <Row itemsCenter onPress={gotoListing}>
                 <Div>
                   <Span fontSize={16}>{listing.title}</Span>
                   <Span fontSize={12} mt2 color={'gray'} lineHeight={20}>
@@ -63,9 +63,9 @@ export const BidFull = ({bid}: {bid: Bid}) => {
                     {pebtoklay(listing.price) + ' klay'}
                   </Span>
                 </Div>
-              ) : null}
-            </Row>
-          </Div>
+              </Row>
+            </Div>
+          ) : null}
           <Div borderGray200 border={0.5} p15 rounded5 mt10>
             <Span fontSize={13} medium>
               보증금 {parseFloat(bid.deposit) / 1e18} klay

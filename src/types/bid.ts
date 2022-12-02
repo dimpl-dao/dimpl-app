@@ -14,6 +14,7 @@ export type Bid = {
   user_id: string;
   deposit: string;
   hash_id: string;
+  hash_id_string: string;
   description: string;
   listing_id: string;
   created_block: string;
