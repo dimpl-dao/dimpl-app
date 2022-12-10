@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "cd ios && pod install",
     "android": "react-native run-android",
+    "androidRelease": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle && react-native run-android --variant=release",
     "ios": "react-native run-ios",
     "iosSehan": "yarn react-native run-ios --device '세한의 iPhone'",
     "start": "react-native start --reset-cache",

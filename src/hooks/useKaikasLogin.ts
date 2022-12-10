@@ -84,7 +84,7 @@ export default function useKaikasLogin() {
               );
             },
             () => {
-              setError('메세지를 서명하는 도중 문제가 발생하였습니다.');
+              setError('로그인 하는중 문제가 발생하였습니다.');
             },
           );
         }
